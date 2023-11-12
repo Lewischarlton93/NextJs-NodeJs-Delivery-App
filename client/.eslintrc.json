@@ -1,0 +1,42 @@
+{
+    "root": true,
+    "plugins": ["@typescript-eslint"],
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "next/core-web-vitals",
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "rules": {
+      "semi": "off",
+      "import/prefer-default-export": "off",
+      "import/no-anonymous-default-export": ["warn", { "allowLiteral": true, "allowObject": true }],
+      "@typescript-eslint/semi": ["error", "never"],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "varsIgnorePattern": "^_"
+        }
+      ],
+      "no-tabs": "off",
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/comma-dangle": ["error", { "generics": "ignore" }],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "off",
+      "react/display-name": "off",
+      "max-len": [
+        "error",
+        150,
+        2,
+        {
+          "ignoreUrls": true,
+          "ignoreComments": true,
+          "ignoreRegExpLiterals": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }
+      ]
+    }
+}
