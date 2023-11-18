@@ -1,0 +1,8 @@
+{
+    "/orders": "/orders",
+    "/orders/:id": "/orders/:id",
+    "/restaurants": "/restaurants",
+    "/restaurants/:restaurantId": "/restaurants/:restaurantId",
+    "/riders": "/riders",
+    "/riders/:riderId": "/riders/:riderId"
+}

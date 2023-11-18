@@ -1,5 +1,3 @@
-import Button from '@mui/material/Button'
-
 export default function Home() {
   return (
     <>
@@ -10,7 +8,10 @@ export default function Home() {
         token (Can take this from my Clickup project as a starting point and rework it to work with
         Sequelize). Will also want to include good test coverage with JEST + Cypress + Storybook.
       </p>
-      <p>Deploy the application to AWS EC2 + Docker? Add relevant logs.</p>
+      <p>
+        Can do a lot of the frontend first and just use json-server to mock the response back from
+        some endpoints.
+      </p>
       <p>
         Riders - We will want a way to sign up on the frontend which will post to the created
         endpoints. We should use the same signup form, but when they click on Sign up as rider, the
@@ -34,7 +35,10 @@ export default function Home() {
         they want (They can filter by food type). They can browser through the items in the menu and
         add to basket to place order.
       </p>
-      <Button color="primary">Hello</Button>
+      <p>
+        P3: Payment Integrations.
+        <p>Deploy the application to AWS EC2 + Docker? Add relevant logs.</p>.
+      </p>
     </>
   )
 }
