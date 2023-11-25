@@ -1,7 +1,12 @@
-import Button from '@mui/material/Button'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Deliveroo App',
+  description: 'Deliveroo Meta Description!'
+}
 
 const Page = () => {
-  return <Button color="primary">Hello</Button>
+  return <p>Home!</p>
 }
 
 export default Page
