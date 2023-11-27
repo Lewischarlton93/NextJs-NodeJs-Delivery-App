@@ -20,8 +20,32 @@ const getOrders = async () => {
   return data
 }
 
+const getOrderById = async (orderId: number) => {
+  const { data } = await axios.get<Order>(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/${orderId}`
+  )
+  console.log('LEW order data by ID', data)
+  return data
+}
+
+const createOrder = () => {
+  // TODO!
+}
+
+const editOrder = () => {
+  // TODO!
+}
+
+const deleteOrder = () => {
+  // TODO!
+}
+
 const OrderService = {
-  getOrders
+  getOrders,
+  getOrderById,
+  createOrder,
+  editOrder,
+  deleteOrder
 }
 
 export default OrderService
