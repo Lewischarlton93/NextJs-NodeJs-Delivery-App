@@ -1,6 +1,6 @@
 'use client'
 import { styled } from '@mui/material'
-import { dFlexSpaceBetween } from '../../../../Theme/UtilityStyles'
+import { dFlexSpaceBetween } from '../../../Theme/UtilityStyles'
 
 const NavBarContainer = styled('div')({
   ...dFlexSpaceBetween,

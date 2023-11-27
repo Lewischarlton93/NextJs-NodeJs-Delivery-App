@@ -19,6 +19,6 @@
     ],
     "strictNullChecks": true
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "Theme/ThemeRegistry.js"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "src/Theme/ThemeRegistry.js"],
   "exclude": ["node_modules"]
 }

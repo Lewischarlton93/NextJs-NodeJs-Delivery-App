@@ -1,7 +1,6 @@
-import Orders from '../../src/Components/Orders/Orders'
-
+import AllOrders from '../../src/Components/Orders/AllOrders'
 const AllOrdersPage = () => {
-  return <Orders />
+  return <AllOrders />
 }
 
 export default AllOrdersPage

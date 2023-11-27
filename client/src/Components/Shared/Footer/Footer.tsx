@@ -1,5 +1,5 @@
 import { styled } from '@mui/material'
-import { layoutMaxWidth } from '../../../../Theme/UtilityStyles'
+import { layoutMaxWidth } from '../../../Theme/UtilityStyles'
 import FooterColumn from './FooterColumn'
 import SocialIcons from '../Social/SocialIcons'
 import Disclaimer from '../CompanyInformation/Disclaimer'

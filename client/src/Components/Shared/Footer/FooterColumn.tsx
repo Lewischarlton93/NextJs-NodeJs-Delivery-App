@@ -1,7 +1,7 @@
 import { Typography, styled } from '@mui/material'
 import React, { ReactNode } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { colors } from '../../../../Theme/Theme'
+import { colors } from '../../../Theme/Theme'
 import Link from 'next/link'
 
 interface FooterColumnProps {

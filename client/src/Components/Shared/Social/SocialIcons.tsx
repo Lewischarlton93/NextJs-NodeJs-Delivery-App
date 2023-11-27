@@ -6,8 +6,8 @@ import YouTubeIcon from '@mui/icons-material/YouTube'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import { dFlexCenter } from '../../../../Theme/UtilityStyles'
-import { colors } from '../../../../Theme/Theme'
+import { dFlexCenter } from '../../../Theme/UtilityStyles'
+import { colors } from '../../../Theme/Theme'
 
 const socialIconData = [
   {

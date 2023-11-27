@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from '@mui/material'
 import Link from 'next/link'
-import { dFlexCenter, dFlexSpaceBetween, layoutMaxWidth } from '../../../../Theme/UtilityStyles'
+import { dFlexCenter, dFlexSpaceBetween, layoutMaxWidth } from '../../../Theme/UtilityStyles'
 import Button from '@mui/material/Button'
 import DeliverooLogo from '../Logo/DeliverooLogo'
 // import NavBar from '../../UI/Nav/NavBar'
