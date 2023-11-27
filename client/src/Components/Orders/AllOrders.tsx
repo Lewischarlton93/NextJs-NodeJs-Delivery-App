@@ -2,6 +2,8 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import { v4 as uuidv4 } from 'uuid'
 import OrderService from '../../Services/Internal/Orders/Orders'
+import { Typography } from '@mui/material'
+import CreateOrder from './CreateOrder'
 
 interface OrderItem {
   name: string
@@ -40,7 +42,7 @@ const AllOrders = () => {
   // TODO: We can link Restaurant ID with restaurant to get the Restaurant name and location.
   return (
     <div>
-      <h2>Orders</h2>
+      <Typography variant="h2">Orders</Typography>
       {orderData?.map((order) => (
         <div key={order.id}>
           <h3>Order #{order.id}</h3>
@@ -56,6 +58,8 @@ const AllOrders = () => {
           </ul>
         </div>
       ))}
+      <Typography variant="h2">Create Order</Typography>
+      <CreateOrder />
     </div>
   )
 }
