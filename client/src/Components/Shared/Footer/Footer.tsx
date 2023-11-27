@@ -23,6 +23,7 @@ const legalLinks = [
 const DeliverooFooter = styled('footer')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   padding: `${theme.spacing(5)} ${theme.spacing(0)} ${theme.spacing(5)}`,
+  marginTop: theme.spacing(6),
   '& .footer': {
     '&__inner': {
       ...layoutMaxWidth

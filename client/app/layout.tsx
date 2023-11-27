@@ -5,6 +5,7 @@ import { layoutMaxWidth } from '../Theme/UtilityStyles'
 import '../Theme/Fonts.css'
 import Header from '../src/Components/Shared/Header/Header'
 import Footer from '../src/Components/Shared/Footer/Footer'
+import TanstackProvider from '../src/Components/Providers/TanstackProvider'
 
 const globalStyles = (
   <GlobalStyles
@@ -49,12 +50,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry options={{ key: 'mui-theme' }}>
-          {globalStyles}
-          <Header />
-          <BodyContainer>{children}</BodyContainer>
-          <Footer />
-        </ThemeRegistry>
+        <TanstackProvider>
+          <ThemeRegistry options={{ key: 'mui-theme' }}>
+            {globalStyles}
+            <Header />
+            <BodyContainer>{children}</BodyContainer>
+            <Footer />
+          </ThemeRegistry>
+        </TanstackProvider>
       </body>
     </html>
   )

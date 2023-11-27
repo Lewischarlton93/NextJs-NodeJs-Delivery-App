@@ -1,13 +1,17 @@
 {
   "private": true,
   "scripts": {
-    "api": "json-server --port 3000 --watch json-server/db.json --routes json-server/routes.json",
+    "api": "json-server --port 8080 --watch json-server/db.json --routes json-server/routes.json",
     "build": "next build",
-    "dev": "next dev",
-    "start": "next start"
+    "frontend": "next dev",
+    "start": "next start",
+    "dev": "concurrently \"npm run api\" \"npm run frontend\""
   },
   "dependencies": {
     "@mui/icons-material": "^5.14.1",
+    "@tanstack/react-query": "^5.8.7",
+    "@tanstack/react-query-devtools": "^5.8.7",
+    "axios": "^1.6.2",
     "next": "^13.5",
     "next-link": "^2.0.0",
     "react": "18.2.0",
@@ -19,12 +23,13 @@
     "@mui/material": "^5.14.17",
     "@storybook/addon-essentials": "^7.2.1",
     "@storybook/react": "^7.2.1",
+    "@tanstack/eslint-plugin-query": "^5.8.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.4.5",
     "@types/react": "^18.2.18",
-    "concurrency": "^0.1.4",
+    "concurrently": "^8.2.2",
     "custom-env": "^2.0.2",
     "cypress": "^12.17.3",
     "eslint": "^8.46.0",
