@@ -1,0 +1,1 @@
+export const mobileNumberRegex = /^(?:\+44|44|0)7\d{9}$/

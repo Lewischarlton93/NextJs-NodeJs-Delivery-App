@@ -26,7 +26,8 @@ export const colors = {
     greyDark1: '#444',
     white: '#FFF',
     teal: '#00CCBC',
-    tealDark: '#00B8A9'
+    tealDark: '#00B8A9',
+    errorRed: '#CC0000'
 }
 
 const Theme = createTheme({
@@ -108,7 +109,7 @@ const Theme = createTheme({
         },
         MuiAccordionSummary: {
             styleOverrides: {
-                root:  ({ theme }) => ({
+                root: ({ theme }) => ({
                     p: {
                         fontSize: 16,
                         fontWeight: 600,
@@ -116,6 +117,17 @@ const Theme = createTheme({
                         [theme.breakpoints.up('sm')]: {
                             fontSize: 18
                         }
+                    }
+                })
+            }
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    minWidth: '100%',
+                    [theme.breakpoints.up('sm')]: {
+                        minWidth: `calc(50% - ${theme.spacing(4)})`,
+                        marginRight: theme.spacing(4),
                     }
                 })
             }
