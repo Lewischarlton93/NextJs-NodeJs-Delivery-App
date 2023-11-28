@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import debounce from 'lodash.debounce'
 import * as yup from 'yup'
-import { FormControl, TextField, Button, Box, Typography, styled } from '@mui/material'
+import { FormControl, FormLabel, TextField, Button, Box, Typography, styled } from '@mui/material'
 import MobileNumberValidator from '../../Validators/MobileNumberValidator'
 import EmailAddressValidator from '../../Validators/EmailAddressValidator'
 import FirstNameValidator from '../../Validators/FirstNameValidator'
@@ -235,7 +235,9 @@ const Register: React.FC<RegisterFormProps> = ({
   return (
     <Form>
       <FormControl sx={{ width: '100%' }}>
-        <Typography variant="h5">Account Type</Typography>
+        <FormLabel className="sub-heading" sx={{ mb: (theme) => theme.spacing(2) }}>
+          Account Type
+        </FormLabel>
         <RadioButton
           options={accountTypeOptions}
           defaultValue={accountUserType}
@@ -251,9 +253,9 @@ const Register: React.FC<RegisterFormProps> = ({
         />
       )}
 
-      <Typography variant="h5">
+      <FormLabel className="sub-heading" sx={{ mt: (theme) => theme.spacing(4) }}>
         {accountUserType === 'Restaurant' ? 'Store Manager Details' : 'Personal Details'}
-      </Typography>
+      </FormLabel>
 
       <TextField
         onFocus={() => setFocus('firstName')}
@@ -321,7 +323,7 @@ const Register: React.FC<RegisterFormProps> = ({
         }}
       />
 
-      <Typography variant="h5">Address Details</Typography>
+      <FormLabel className="sub-heading">Address Details</FormLabel>
 
       {/* Be nice to add in some external APIs here. Google Places API for Restaurant info. Loqate or similar for address. Once we then have the address, we need to
        do something with it in order to store the Lat/Long values into the DB. 

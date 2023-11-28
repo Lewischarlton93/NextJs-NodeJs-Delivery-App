@@ -131,18 +131,42 @@ const Theme = createTheme({
                     }
                 })
             }
+        },
+        MuiFormLabel: {
+            styleOverrides: {
+                root: {
+                    display: 'flex',
+                    '&.sub-heading': {
+                        fontSize: 18,
+                        fontWeight: 600,
+                        color: colors.black,
+                        '&.Mui-focused': {
+                            color: colors.black
+                        }
+                    }
+                }
+            }
+        },
+        MuiFormHelperText: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    margin: `0 0 ${theme.spacing(4)} 0`,
+                    color: colors.errorRed, // Currently only used for Error Messages
+                    fontSize: 14
+                })
+            }
         }
     }
 })
 
 // Typography styles
 Theme.typography.h1 = {
-    fontSize: 30,
+    fontSize: 24,
     marginBottom: Theme.spacing(5),
     lineHeight: '34px',
     fontFamily: fonts.bold,
     [Theme.breakpoints.up('sm')]: {
-        fontSize: 34,
+        fontSize: 28,
         lineHeight: '38px'
     }
 }
