@@ -15,17 +15,25 @@ interface Order {
 }
 
 const getOrders = async () => {
-  const { data } = await axios.get<Order[]>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/orders`)
-  console.log('LEW ORDER DATA', data)
-  return data
+  try {
+    const { data } = await axios.get<Order[]>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/orders`)
+    console.log('LEW ORDER DATA', data)
+    return data
+  } catch (err) {
+    console.log('LEW ERR', err)
+  }
 }
 
 const getOrderById = async (orderId: number) => {
-  const { data } = await axios.get<Order>(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/${orderId}`
-  )
-  console.log('LEW order data by ID', data)
-  return data
+  try {
+    const { data } = await axios.get<Order>(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/orders/${orderId}`
+    )
+    console.log('TEST LEW order data by ID', data)
+    return data
+  } catch (err) {
+    console.log('LEW ERR', err)
+  }
 }
 
 const createOrder = () => {

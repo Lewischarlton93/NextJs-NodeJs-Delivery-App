@@ -8,6 +8,7 @@ import { Typography, Button } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
+// TODO: Revisit this when doing the customer side of it. As really we just want to use this to post the items to create the order.
 const CreateOrder = () => {
   const queryClient = useQueryClient()
 
@@ -33,7 +34,7 @@ const CreateOrder = () => {
   return (
     <>
       <Typography variant="body1" sx={{ fontSize: 12 }}>
-        This is here temporary until backend part is done!
+        This is here temporary until backend/customer part is done!
       </Typography>
       <form>
         <Button onClick={() => submitOrder()} disabled={isPending}>
