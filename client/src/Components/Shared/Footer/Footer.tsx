@@ -39,7 +39,7 @@ const DeliverooFooter = styled('footer')(({ theme }) => ({
 
 const Footer = () => {
   return (
-    <DeliverooFooter>
+    <DeliverooFooter className="deliveroo-footer">
       <div className="footer__inner">
         <div className="footer__links">
           <FooterColumn title="Company" links={companyLinks} />

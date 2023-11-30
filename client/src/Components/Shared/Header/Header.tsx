@@ -28,7 +28,7 @@ const DeliverooHeader = styled('header')(({ theme }) => ({
 
 const Header = () => {
   return (
-    <DeliverooHeader>
+    <DeliverooHeader className="deliveroo-header">
       <div className="header-top">
         <div className="left-col">
           <DeliverooLogo />

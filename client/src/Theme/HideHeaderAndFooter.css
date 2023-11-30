@@ -1,0 +1,7 @@
+/* TODO: This is a really hacky but quick work around to remove these from the Rider pages 
+as this is only area on site which doesn't need them
+Need to look at doing this instead: https://nextjs.org/docs/app/building-your-application/routing/route-groups#creating-multiple-root-layouts  */
+.deliveroo-header,
+.deliveroo-footer {
+    display: none !important;
+}
