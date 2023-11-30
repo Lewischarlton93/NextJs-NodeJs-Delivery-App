@@ -32,16 +32,34 @@ export default function Home() {
             which you can click into to show more info.
           </li>
           <li>
-            If you accept the order, you will then be given an order number to collect from the
-            restaurant. Once you have picked up the order from the restaurant, there will be another
-            button to 'start delivery'. which will change the status of the order to Out for
-            delivery.
+            There will be a google map taking up most of screen. It will show your location + final
+            destination on it. To the bottom right, is a arrow symbol. If you click that, it will
+            open up directions in google maps (new tab/app)
           </li>
           <li>
-            This will then bring up the customers address into google maps. It will show directions
-            + roughly how long.
+            If you accept the order, you will then be given an order number to collect from the
+            restaurant. Once you are near the location of restaurant, the button which said "travel
+            X miles to restaurant" will now change to "arrived". This will be clickable.
+          </li>
+          <li>Once clicked Arrived, it will then show a more detailed order summary.</li>
+          <li>
+            Once you have picked up the order from the restaurant, there will be another button
+            'Collected Order'. which will change the status of the order to Out for delivery.
+          </li>
+          <li>
+            Once clicked on this button, it will then take you back to the screen with the map on.
+            Your location, customer location markers on the map. It will have customers address on
+            this and button which says "Travel X mi to customer. Same as before, there will be an
+            arrow to open this in google maps.
+          </li>
+          <li>
+            Then same as before.. When you are near the location, the button will change to
+            "arrived". Click this and you are then presented with a screen to Chat or Call the
+            customer if they aren't answering. You then just select Delivery complete once done.
           </li>
         </ul>
+        There is also a hamburger menu (floating on the map top left). Clicking this brings out a
+        side menu. It shows Name, riderId. Then some links e.g. Earnings.
       </p>
 
       <p>
