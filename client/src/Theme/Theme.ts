@@ -75,6 +75,11 @@ const Theme = createTheme({
                     '&.MuiButton-outlined': {
                         backgroundColor: colors.white,
                         color: theme.palette.primary.main
+                    },
+                    // Text Variant
+                    '&.MuiButton-text': {
+                        backgroundColor: 'unset',
+                        fontWeight: 600
                     }
                 })
             }
@@ -128,6 +133,9 @@ const Theme = createTheme({
                     [theme.breakpoints.up('sm')]: {
                         minWidth: `calc(50% - ${theme.spacing(4)})`,
                         marginRight: theme.spacing(4),
+                    },
+                    input: {
+                        backgroundColor: colors.white,
                     }
                 })
             }

@@ -87,7 +87,9 @@ const GoOnline = () => {
         <Typography variant="h2">
           {isOnline ? 'Finding orders for you...' : `Ready to ride, ${riderName} ?`}
         </Typography>
-        <Button onClick={handleUpdateOnlineStatus}>{isOnline ? 'Go Offline' : 'Go Online'}</Button>
+        <Button onClick={handleUpdateOnlineStatus} variant="contained">
+          {isOnline ? 'Go Offline' : 'Go Online'}
+        </Button>
       </GoOnlineWrapper>
       {/* TODO: Revisit logic here! */}
       {isOnline && !waitingForOrder && (
