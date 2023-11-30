@@ -10,6 +10,7 @@ import {
 import { styled, Button, TextField, Typography } from '@mui/material'
 import { dFlexSpaceBetween } from '../../Theme/UtilityStyles'
 import { colors } from '../../Theme/Theme'
+import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
 // TODO: Pass in Rider Location, Restaurant Location & Customer Address.
 // Probably just do Current Location and Destination though as never need to do all 3 on the one map.
@@ -66,7 +67,7 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
   const destinationRef = useRef<HTMLInputElement>(null)
 
   if (!isLoaded) {
-    return <p>Loading Map</p>
+    return <LoadingSpinner containerHeight="65vh" />
   }
 
   async function calculateRoute() {

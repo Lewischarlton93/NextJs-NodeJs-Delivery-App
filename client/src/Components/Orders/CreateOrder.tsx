@@ -7,6 +7,7 @@
 import { Typography, Button } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
 // TODO: Revisit this when doing the customer side of it. As really we just want to use this to post the items to create the order.
 const CreateOrder = () => {
@@ -28,7 +29,7 @@ const CreateOrder = () => {
   })
 
   if (isPending) {
-    return <p>Loading... (Maybe do a loading spinner on the button?, pass in isLoading prop?)</p>
+    return <LoadingSpinner />
   }
 
   return (

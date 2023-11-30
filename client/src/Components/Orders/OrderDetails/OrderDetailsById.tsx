@@ -5,22 +5,8 @@ import OrderService from '../../../Services/Internal/Orders/Orders'
 import ErrorMessage from '../../../UI/Error/ErrorMessage'
 import { useState } from 'react'
 import { Button } from '@mui/material'
-
-// TODO: SORT THESE AS PRIORITY!
-interface OrderItem {
-  name: string
-  quantity: number
-  price: number
-}
-
-interface Order {
-  id: number
-  items: { [productId: string]: OrderItem }
-  status: string
-  // TODO: Update backend to reflect riderId and restaurantId.
-  riderId: number
-  restaurantId: number
-}
+import LoadingSpinner from '../../../UI/Loading/LoadingSpinner'
+import { Order } from '../../../Types/Order'
 
 const OrderDetailsById = ({ orderId }) => {
   const [showItemDetails, setShowItemDetails] = useState(false)
@@ -36,7 +22,7 @@ const OrderDetailsById = ({ orderId }) => {
     isError
   }: UseQueryResult<Order, Error> = useQuery(queryOptions)
 
-  if (isLoading) return <div>Loading orders...</div>
+  if (isLoading) return <LoadingSpinner />
   if (isError) {
     return <ErrorMessage error="Error loading order details, please refresh this window" />
   }
