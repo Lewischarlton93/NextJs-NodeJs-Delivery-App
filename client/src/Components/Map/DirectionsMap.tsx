@@ -10,19 +10,20 @@ import {
 import { styled, Button, TextField, Typography } from '@mui/material'
 import { colors } from '../../Theme/Theme'
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
+import NavigationIcon from '@mui/icons-material/Navigation'
 
 // TODO: Pass in Rider Location, Restaurant Location & Customer Address.
 // Probably just do Current Location and Destination though as never need to do all 3 on the one map.
 interface DirectionsMapProps {}
 
-const DirectionsMapContainer = styled('div')(({}) => ({
+const DirectionsMapContainer = styled('div')(() => ({
   position: 'relative',
   '& .MuiFormControl-root': {
     width: '100%'
   }
 }))
 
-const GoogleMapContainer = styled('div')(({}) => ({
+const GoogleMapContainer = styled('div')(() => ({
   width: '100%',
   height: '85vh'
 }))
@@ -95,6 +96,14 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
     if (destinationRef.current) destinationRef.current.value = ''
   }
 
+  function openGoogleMaps() {
+    if (originRef.current?.value && destinationRef.current?.value) {
+      // TODO: Change bicycling to travelMode from rider account settings
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${originRef.current.value}&destination=${destinationRef.current.value}&travelmode=bicycling`
+      window.open(url, '_blank')
+    }
+  }
+
   return (
     <DirectionsMapContainer>
       <GoogleMapContainer>
@@ -140,6 +149,20 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
             </Button>
             <Button onClick={clearRoute} variant="text">
               Clear Route
+            </Button>
+            <Button
+              onClick={openGoogleMaps}
+              variant="outlined"
+              sx={{
+                borderRadius: '100%',
+                height: 50,
+                width: 50,
+                position: 'absolute',
+                bottom: (theme) => theme.spacing(4),
+                right: (theme) => theme.spacing(4)
+              }}
+            >
+              <NavigationIcon sx={{ width: 28, height: 28 }} />
             </Button>
           </div>
         </div>
