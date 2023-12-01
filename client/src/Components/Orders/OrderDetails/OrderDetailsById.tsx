@@ -1,12 +1,17 @@
 'use client'
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { v4 as uuidv4 } from 'uuid'
 import OrderService from '../../../Services/Internal/Orders/Orders'
 import ErrorMessage from '../../../UI/Error/ErrorMessage'
 import { useState } from 'react'
 import { Button } from '@mui/material'
 import LoadingSpinner from '../../../UI/Loading/LoadingSpinner'
 import { Order } from '../../../Types/Order'
+import { styled } from '@mui/material'
+import { colors } from '../../../Theme/Theme'
+
+const OrderDetailsWrapper = styled('div')(({ theme }) => ({
+  // TODO
+}))
 
 const OrderDetailsById = ({ orderId }) => {
   const [showItemDetails, setShowItemDetails] = useState(false)
@@ -34,10 +39,14 @@ const OrderDetailsById = ({ orderId }) => {
   return (
     <>
       {orderData && (
-        <div>
-          <p>Order ID: {orderData.id}</p>
+        <OrderDetailsWrapper>
+          <p>Order #{orderData.id}</p>
           {/* ... Other order details ... */}
-          <Button onClick={toggleItemDetails}>
+          <Button
+            onClick={toggleItemDetails}
+            variant="text"
+            sx={{ color: colors.black, paddingLeft: 0 }}
+          >
             {showItemDetails ? 'Hide' : 'Show'} Item Details
           </Button>
           {showItemDetails && (
@@ -54,7 +63,7 @@ const OrderDetailsById = ({ orderId }) => {
               </ul>
             </>
           )}
-        </div>
+        </OrderDetailsWrapper>
       )}
     </>
   )

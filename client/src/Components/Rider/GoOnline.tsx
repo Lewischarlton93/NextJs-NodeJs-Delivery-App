@@ -1,6 +1,5 @@
 'use client'
-import Button from '@mui/material/Button'
-import { Typography, styled } from '@mui/material'
+import { Typography, styled, Button } from '@mui/material'
 import { colors } from '../../Theme/Theme'
 import React, { useState, useEffect } from 'react'
 import { assignOrderToRider } from '../../Utils/Rider/RiderUtils'
@@ -19,6 +18,10 @@ const GoOnlineWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   width: '100%',
   backgroundColor: colors.white,
+  minHeight: '100px',
+  maxHeight: '100px',
+  zIndex: 10,
+  borderTop: `1px solid ${colors.grey}`,
   h2: {
     marginRight: theme.spacing(4),
     marginBottom: 0,
@@ -27,6 +30,29 @@ const GoOnlineWrapper = styled('div')(({ theme }) => ({
       fontSize: 20
     }
   }
+}))
+
+const OrderDetailsContainer = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  bottom: '75px',
+  backgroundColor: colors.white,
+  minHeight: '200px',
+  maxHeight: '200px',
+  // TODO: Add some global styling to hide or make scroll bar look nicer!
+  overflowY: 'scroll',
+  width: '100%',
+  padding: theme.spacing(4),
+  zIndex: 11
+}))
+
+const ActionsContainer = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  bottom: 0,
+  minHeight: '75px',
+  padding: theme.spacing(4),
+  backgroundColor: colors.white,
+  zIndex: 20,
+  width: '100%'
 }))
 
 const GoOnline = () => {
@@ -67,7 +93,8 @@ const GoOnline = () => {
     setWaitingForOrder(true)
   }
 
-  const { timeRemaining, resetTimer } = useCountdownTimer(30, handleOrderTimeout)
+  // TODO: Set this back to 30 when done adding styling.
+  const { timeRemaining, resetTimer } = useCountdownTimer(300000, handleOrderTimeout)
 
   useEffect(() => {
     // Simulate the process of assigning an order after 5 seconds - TODO: Will be changing once customer order part is added!
@@ -94,15 +121,30 @@ const GoOnline = () => {
       {/* TODO: Revisit logic here! */}
       {isOnline && !waitingForOrder && (
         <>
-          {showAssignedOrder()}
-          <CountdownProgressBar initialTime={30} onTimeout={handleOrderTimeout} />
-          <p>Time Remaining: {timeRemaining} seconds</p>
-          <button onClick={handleAcceptOrder} disabled={timeRemaining === 0}>
-            Accept Order
-          </button>
-          <button onClick={handleDeclineOrder} disabled={timeRemaining === 0}>
-            Decline Order
-          </button>
+          <CountdownProgressBar
+            initialTime={300000}
+            onTimeout={handleOrderTimeout}
+            styleOverrides={{ position: 'absolute', bottom: '275px', zIndex: 15 }}
+          />
+          <OrderDetailsContainer>
+            {showAssignedOrder()}
+            <p>Time Remaining: {timeRemaining} seconds</p>
+            <Button onClick={handleDeclineOrder} disabled={timeRemaining === 0}>
+              Decline Order
+            </Button>
+          </OrderDetailsContainer>
+          <ActionsContainer>
+            <Button
+              onClick={handleAcceptOrder}
+              disabled={timeRemaining === 0}
+              variant="contained"
+              sx={{
+                width: '100%'
+              }}
+            >
+              Accept and Go
+            </Button>
+          </ActionsContainer>
         </>
       )}
     </>

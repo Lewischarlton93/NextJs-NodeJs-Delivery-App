@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { styled, Theme } from '@mui/system'
+import { styled, Theme, SxProps } from '@mui/system'
 import { colors } from '../../Theme/Theme'
 
 interface CountdownProgressBarProps {
   initialTime: number
   onTimeout: () => void
+  styleOverrides?: SxProps
 }
 
 const CountdownProgressBarContainer = styled('div')(({ theme }: { theme: Theme }) => ({
   width: '100%',
   height: theme.spacing(2),
-  backgroundColor: colors.grey,
-  position: 'relative'
+  backgroundColor: colors.grey
+  // TODO: These styles shouldn't really be here as it's suppose to be a re-usable component.
+  // Need to look at passing styleOverrides in.
 }))
 
 const CountdownProgressBarInner = styled('div')(({ theme }: { theme: Theme }) => ({
@@ -20,7 +22,11 @@ const CountdownProgressBarInner = styled('div')(({ theme }: { theme: Theme }) =>
   position: 'absolute'
 }))
 
-const CountdownProgressBar: React.FC<CountdownProgressBarProps> = ({ initialTime, onTimeout }) => {
+const CountdownProgressBar: React.FC<CountdownProgressBarProps> = ({
+  initialTime,
+  onTimeout,
+  styleOverrides
+}) => {
   const [timeRemaining, setTimeRemaining] = useState<number>(initialTime)
 
   useEffect(() => {
@@ -40,7 +46,7 @@ const CountdownProgressBar: React.FC<CountdownProgressBarProps> = ({ initialTime
   const percentage: number = (timeRemaining / initialTime) * 100
 
   return (
-    <CountdownProgressBarContainer>
+    <CountdownProgressBarContainer sx={{ ...styleOverrides }}>
       <CountdownProgressBarInner
         sx={{
           width: `${percentage}%`

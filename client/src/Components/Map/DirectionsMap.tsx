@@ -8,7 +8,6 @@ import {
   DirectionsRenderer
 } from '@react-google-maps/api'
 import { styled, Button, TextField, Typography } from '@mui/material'
-import { dFlexSpaceBetween } from '../../Theme/UtilityStyles'
 import { colors } from '../../Theme/Theme'
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
@@ -34,13 +33,13 @@ const GoogleMapActions = styled('div')(({ theme }) => ({
   width: '100%',
   background: 'rgba(0, 0, 0, 0.6)',
   padding: theme.spacing(4),
-  '& .google-map-actions': {
-    //display: 'flex'
-  },
   '& .google-map-metrics': {
     marginTop: theme.spacing(4),
     '&__distance-duration': {
-      ...dFlexSpaceBetween
+      display: 'flex',
+      '& p:first-of-type': {
+        marginRight: theme.spacing(2)
+      }
     }
   }
 }))
@@ -117,7 +116,7 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
         </GoogleMap>
       </GoogleMapContainer>
       <GoogleMapActions>
-        <div className="google-map-actions">
+        <div className="google-map-actions__inner">
           {/* TODO: Have added inputs here for now (for testing) but the values will just be replaced with store/rider locations */}
           <Autocomplete>
             <TextField type="text" placeholder="Origin" inputRef={originRef} />

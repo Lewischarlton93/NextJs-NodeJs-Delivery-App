@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import debounce from 'lodash.debounce'
 import * as yup from 'yup'
-import { FormControl, FormLabel, TextField, Button, Box, Typography, styled } from '@mui/material'
+import { FormControl, FormLabel, TextField, Button, Box, styled } from '@mui/material'
 import MobileNumberValidator from '../../Validators/MobileNumberValidator'
 import EmailAddressValidator from '../../Validators/EmailAddressValidator'
 import FirstNameValidator from '../../Validators/FirstNameValidator'
