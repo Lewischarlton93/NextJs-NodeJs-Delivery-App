@@ -6,6 +6,7 @@ import '../src/Theme/Fonts.css'
 import Header from '../src/Components/Shared/Header/Header'
 import Footer from '../src/Components/Shared/Footer/Footer'
 import TanstackProvider from '../src/Components/Providers/TanstackProvider'
+import { colors } from '../src/Theme/Theme'
 
 const globalStyles = (
   <GlobalStyles
@@ -35,6 +36,15 @@ const globalStyles = (
         display: 'flex',
         flexDirection: 'column',
         lineHeight: 1.6
+      },
+      // Styles for scrollbar
+      '::-webkit-scrollbar': {
+        width: 5,
+        backgroundColor: colors.grey
+      },
+      '::-webkit-scrollbar-thumb': {
+        backgroundColor: theme.palette.primary.dark,
+        borderRadius: '6px'
       }
     })}
   />
