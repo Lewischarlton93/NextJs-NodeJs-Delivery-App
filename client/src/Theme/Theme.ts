@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 
+// Breakpoint customization
 declare module '@mui/material/styles' {
     interface BreakpointOverrides {
       xs: true,
@@ -12,6 +13,22 @@ declare module '@mui/material/styles' {
       x4k: true
     }
 }
+
+// Add additional Typography variants to prop options
+declare module '@mui/material/styles' {
+    interface TypographyVariants {
+      subHeading: React.CSSProperties
+    }
+
+    interface TypographyVariantsOptions {
+      subHeading?: React.CSSProperties
+    }
+  }
+  declare module '@mui/material/Typography' {
+    interface TypographyPropsVariantOverrides {
+      subHeading: true
+    }
+  }
 
 export const fonts = {
     medium: '"Montserrat Medium", sans-serif',
@@ -37,7 +54,10 @@ const Theme = createTheme({
             fonts.medium,
             fonts.bold,
             fonts.light
-        ].join(',')
+        ].join(','),
+        subHeading: {
+            fontWeight: 600
+        }
     },
     breakpoints: { 
         values: { 
@@ -63,6 +83,14 @@ const Theme = createTheme({
     },
     spacing: [0, 5, 10, 15, 20, 30, 40, 60, 70, 80], 
     components: {
+        MuiTypography: {
+            defaultProps: {
+              variantMapping: {
+                // Map new subHeading variant to render a <p> by default
+                subHeading: 'p'
+              }
+            }
+        },
         MuiButton: {
             styleOverrides: {
                 root: ({ theme }) => ({
