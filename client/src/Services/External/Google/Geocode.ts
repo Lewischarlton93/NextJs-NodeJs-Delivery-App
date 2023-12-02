@@ -18,7 +18,7 @@ interface GeocodeResponse {
 const Geocode = async (address: string): Promise<{ lat: number; lng: number }> => {
   try {
     const response = await axios.get<GeocodeResponse>(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      `${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_BASE_URL}/geocode/json?address=${encodeURIComponent(
         address
       )}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ''}`
     )
