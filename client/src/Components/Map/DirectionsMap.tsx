@@ -64,6 +64,16 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
   // const mapZoom = 15
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null)
 
+  const restaurantLocation = {
+    lat: 53.098293,
+    lng: -2.4552962
+  }
+
+  const customerLocation = {
+    lat: 53.111529,
+    lng: -2.4332326
+  }
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -148,6 +158,12 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
             {/* Marker didn't work with React 18+ so had to use MarkerF instead. Ref: https://github.com/JustFly1984/react-google-maps-api/issues/3048#issuecomment-1166410403*/}
             {isLoaded && map && userLocation && (
               <MarkerF position={userLocation} title="Rider Location" />
+            )}
+            {isLoaded && map && restaurantLocation && (
+              <MarkerF position={restaurantLocation} title="Restaurant Location" />
+            )}
+            {isLoaded && map && customerLocation && (
+              <MarkerF position={customerLocation} title="Customer Location" />
             )}
             {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
           </GoogleMap>
