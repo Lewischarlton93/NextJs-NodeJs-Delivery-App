@@ -1,9 +1,9 @@
 'use client'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import {
   useJsApiLoader,
   GoogleMap,
-  Marker,
+  MarkerF,
   Autocomplete,
   DirectionsRenderer
 } from '@react-google-maps/api'
@@ -12,7 +12,7 @@ import { colors } from '../../Theme/Theme'
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 import NavigationIcon from '@mui/icons-material/Navigation'
 
-// TODO: Pass in Rider Location, Restaurant Location & Customer Address.
+// TODO: Pass in Rider Location, Restaurant Location & Customer Address. (Or get from Zustand global state instead?)
 // Probably just do Current Location and Destination though as never need to do all 3 on the one map.
 interface DirectionsMapProps {}
 
@@ -45,7 +45,7 @@ const GoogleMapActions = styled('div')(({ theme }) => ({
   }
 }))
 
-// TODO: Currently set to crewe but need to look at centering based on rider location
+// Currently set to crewe but map will always center to rider location when available
 const centerMapPosition = { lat: 53.09787, lng: -2.44161 }
 const libraries: ['places'] = ['places']
 
@@ -62,6 +62,25 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
   const [distance, setDistance] = useState('')
   const [duration, setDuration] = useState('')
   // const mapZoom = 15
+  const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null)
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+        },
+        (error) => {
+          console.error('Error getting current location:', error)
+        }
+      )
+    } else {
+      console.error('Geolocation is not supported by this browser.')
+    }
+  }, [])
 
   const originRef = useRef<HTMLInputElement>(null)
   const destinationRef = useRef<HTMLInputElement>(null)
@@ -104,25 +123,35 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
     }
   }
 
+  const handleMapLoad = (loadedMap: google.maps.Map) => {
+    setMap(loadedMap)
+  }
+
   return (
     <DirectionsMapContainer>
       <GoogleMapContainer>
-        <GoogleMap
-          center={centerMapPosition}
-          zoom={15}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false
-          }}
-          onLoad={(map) => setMap(map as google.maps.Map)}
-          onUnmount={() => setMap(null)}
-        >
-          {isLoaded && map && <Marker position={centerMapPosition} />}
-          {isLoaded && directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
-        </GoogleMap>
+        {isLoaded && (
+          <GoogleMap
+            center={userLocation || centerMapPosition}
+            zoom={15}
+            mapContainerStyle={{ width: '100%', height: '100%' }}
+            options={{
+              zoomControl: false,
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: false
+            }}
+            onLoad={handleMapLoad}
+            onUnmount={() => setMap(null)}
+            id="googleMapContainer"
+          >
+            {/* Marker didn't work with React 18+ so had to use MarkerF instead. Ref: https://github.com/JustFly1984/react-google-maps-api/issues/3048#issuecomment-1166410403*/}
+            {isLoaded && map && userLocation && (
+              <MarkerF position={userLocation} title="Rider Location" />
+            )}
+            {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
+          </GoogleMap>
+        )}
       </GoogleMapContainer>
       <GoogleMapActions>
         <div className="google-map-actions__inner">
