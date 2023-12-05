@@ -10,6 +10,7 @@ import CountdownProgressBar from '../../UI/ProgressBar/CountdownProgressBar'
 import StorefrontIcon from '@mui/icons-material/Storefront'
 import PersonIcon from '@mui/icons-material/Person'
 import Directions from '../../Services/External/Google/Directions'
+import { useRiderStore } from '../../Stores/Rider/useRiderStore'
 
 const mockRiderData = {
   name: 'Lewis Charlton',
@@ -92,6 +93,7 @@ const ActionsContainer = styled('div')(({ theme }) => ({
 }))
 
 const GoOnline = () => {
+  const { riderFirstName } = useRiderStore()
   const [isOnline, setIsOnline] = useState(false)
   const [waitingForOrder, setWaitingForOrder] = useState(true)
 
@@ -148,9 +150,6 @@ const GoOnline = () => {
   //   return <OrderDetailsById orderId={1} />
   // }
 
-  // TODO: Update this with logged in user.
-  const riderName = 'Lewis'
-
   const handleUpdateOnlineStatus = () => {
     // TODO: POST REQ to update rider online status in Rider table.
     console.log('Online!')
@@ -178,8 +177,8 @@ const GoOnline = () => {
     setWaitingForOrder(true)
   }
 
-  // TODO: Set this back to 30 when done adding styling.
-  const { timeRemaining, resetTimer } = useCountdownTimer(300000, handleOrderTimeout)
+  // TODO: Uncomment / Set this back to 30 when done adding styling.
+  // const { timeRemaining, resetTimer } = useCountdownTimer(300000, handleOrderTimeout)
 
   useEffect(() => {
     // Simulate the process of assigning an order after 5 seconds - TODO: Will be changing once customer order part is added!
@@ -197,7 +196,7 @@ const GoOnline = () => {
     <>
       <GoOnlineWrapper>
         <Typography variant="h2">
-          {isOnline ? 'Finding orders for you...' : `Ready to ride, ${riderName} ?`}
+          {isOnline ? 'Finding orders for you...' : `Ready to ride, ${riderFirstName} ?`}
         </Typography>
         <Button onClick={handleUpdateOnlineStatus} variant="contained">
           {isOnline ? 'Go Offline' : 'Go Online'}
@@ -206,11 +205,11 @@ const GoOnline = () => {
       {/* TODO: Revisit logic here! */}
       {isOnline && !waitingForOrder && (
         <>
-          <CountdownProgressBar
+          {/* <CountdownProgressBar
             initialTime={300000}
             onTimeout={handleOrderTimeout}
             styleOverrides={{ position: 'absolute', bottom: '275px', zIndex: 15 }}
-          />
+          /> */}
           <OrderDetailsContainer>
             {/* {showAssignedOrder()} */}
             {/* <Button onClick={handleDeclineOrder} disabled={timeRemaining === 0}>

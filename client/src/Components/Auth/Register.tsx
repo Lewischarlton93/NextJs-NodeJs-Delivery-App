@@ -8,6 +8,8 @@ import EmailAddressValidator from '../../Validators/EmailAddressValidator'
 import FirstNameValidator from '../../Validators/FirstNameValidator'
 import LastNameValidator from '../../Validators/LastNameValidator'
 import RadioButton from '../../UI/RadioButton/RadioButton'
+import { useRouter } from 'next/navigation'
+import { useRiderStore } from '../../Stores/Rider/useRiderStore'
 
 interface RegisterFormProps {
   existingAnswers: any
@@ -62,6 +64,8 @@ const Register: React.FC<RegisterFormProps> = ({
   const [restaurantName, setRestaurantName] = useState('')
   const [accountUserType, setAccountUserType] = useState(userType ?? '')
   const [focus, setFocus] = useState<FieldKey | null>(null)
+  const { riderFirstName, updateRiderInfo } = useRiderStore()
+  const router = useRouter()
 
   const [values, setValues] = useState<{ [key in FieldKey]: string }>(
     existingAnswers ?? {
@@ -221,8 +225,23 @@ const Register: React.FC<RegisterFormProps> = ({
     // TODO: POST LOGIC TO ENDPOINT FOR REGISTER.
     if (displayRegisterButton) {
       console.log('Registed!')
+      if (accountUserType === 'Rider') {
+        console.log('LEWIS IT IS')
+        // TODO: Update Rider store with other values.
+        updateRiderInfo({
+          riderId: 1, // This will be auto incremented in DB
+          riderFirstName: values.firstName,
+          riderLastName: values.lastName,
+          riderContactNumber: values.contactNumber,
+          riderEmailAddress: values.emailAddress
+        })
+        // TODO: (Will most likely do POST req with info, and then GET req when on the page below (then update state on that?))
+        router.replace('/rider/start-delivering')
+      }
     }
   }
+
+  console.log(riderFirstName)
 
   const handleEnterPress = (event: React.KeyboardEvent): void => {
     if (event.code === 'Enter' || event.key === 'Enter') {
