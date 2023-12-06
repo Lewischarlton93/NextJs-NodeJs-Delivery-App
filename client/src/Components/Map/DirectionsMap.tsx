@@ -165,6 +165,9 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
             {isLoaded && map && customerLocation && (
               <MarkerF position={customerLocation} title="Customer Location" />
             )}
+
+            {/* TODO: Check if riderStep === ORDER_ACCEPTED, and then show the directions. Likewise above, only show markers
+            when riderStep is ORDER_RECEIVED. Maybe add switch case for these as well? */}
             {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
           </GoogleMap>
         )}

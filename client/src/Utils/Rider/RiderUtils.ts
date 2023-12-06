@@ -11,6 +11,7 @@ export const assignOrderToRider = (order: Order, onlineRiders: Rider[]) => {
   
     updateOrderStatus(order.id, 'assigned', selectedRider.id)
     console.log(`Order assigned to ${selectedRider.name}:`, order)
+    // TODO: Update Global state for assigned Rider + create useRestarant store!
 }
 
 export const updateOrderStatus = (orderId: number, newStatus: Order['status'], riderId: number) => {
