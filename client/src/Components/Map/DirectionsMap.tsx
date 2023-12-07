@@ -11,6 +11,7 @@ import { styled, Button, TextField, Typography } from '@mui/material'
 import { colors } from '../../Theme/Theme'
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 import NavigationIcon from '@mui/icons-material/Navigation'
+import { useRiderStore } from '../../Stores/Rider/useRiderStore'
 
 // TODO: Pass in Rider Location, Restaurant Location & Customer Address. (Or get from Zustand global state instead?)
 // Probably just do Current Location and Destination though as never need to do all 3 on the one map.
@@ -63,6 +64,7 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
   const [duration, setDuration] = useState('')
   // const mapZoom = 15
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null)
+  const { riderStep } = useRiderStore()
 
   const restaurantLocation = {
     lat: 53.098293,
@@ -92,6 +94,10 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
     }
   }, [])
 
+  useEffect(() => {
+    console.log('LEW riderStep', riderStep)
+  }, [riderStep])
+
   const originRef = useRef<HTMLInputElement>(null)
   const destinationRef = useRef<HTMLInputElement>(null)
 
@@ -106,7 +112,9 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
 
     const directionsService = new google.maps.DirectionsService()
     const results = await directionsService.route({
+      // TODO: origin will always be rider current location.
       origin: originRef.current.value,
+      // TODO: Will need to do a check here to see if destination is restaurant or customer based on riderStep.
       destination: destinationRef.current.value,
       // TODO: Change travelMode to come from rider account settings
       travelMode: google.maps.TravelMode.BICYCLING
@@ -137,6 +145,36 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
     setMap(loadedMap)
   }
 
+  const renderMarkersOrDirections = () => {
+    switch (riderStep) {
+      case 'ORDER_RECEIVED':
+        {
+          /* TODO: Make seperate component to render a marker, e.g. pass in position and title */
+        }
+        return (
+          <>
+            {/* Marker didn't work with React 18+ so had to use MarkerF instead. Ref: https://github.com/JustFly1984/react-google-maps-api/issues/3048#issuecomment-1166410403*/}
+            {isLoaded && map && userLocation && (
+              <MarkerF position={userLocation} title="Rider Location" />
+            )}
+            {isLoaded && map && restaurantLocation && (
+              <MarkerF position={restaurantLocation} title="Restaurant Location" />
+            )}
+            {isLoaded && map && customerLocation && (
+              <MarkerF position={customerLocation} title="Customer Location" />
+            )}
+          </>
+        )
+        {
+          /* TODO: Next step is to make sure directionsResponse is set by passing in locations from global state */
+        }
+      case 'ORDER_ACCEPTED':
+        return <>{directionsResponse && <DirectionsRenderer directions={directionsResponse} />}</>
+      default:
+        return <></>
+    }
+  }
+
   return (
     <DirectionsMapContainer>
       <GoogleMapContainer>
@@ -155,20 +193,7 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
             onUnmount={() => setMap(null)}
             id="googleMapContainer"
           >
-            {/* Marker didn't work with React 18+ so had to use MarkerF instead. Ref: https://github.com/JustFly1984/react-google-maps-api/issues/3048#issuecomment-1166410403*/}
-            {isLoaded && map && userLocation && (
-              <MarkerF position={userLocation} title="Rider Location" />
-            )}
-            {isLoaded && map && restaurantLocation && (
-              <MarkerF position={restaurantLocation} title="Restaurant Location" />
-            )}
-            {isLoaded && map && customerLocation && (
-              <MarkerF position={customerLocation} title="Customer Location" />
-            )}
-
-            {/* TODO: Check if riderStep === ORDER_ACCEPTED, and then show the directions. Likewise above, only show markers
-            when riderStep is ORDER_RECEIVED. Maybe add switch case for these as well? */}
-            {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
+            {renderMarkersOrDirections()}
           </GoogleMap>
         )}
       </GoogleMapContainer>

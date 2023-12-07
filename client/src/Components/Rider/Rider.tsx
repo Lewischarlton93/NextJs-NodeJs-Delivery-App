@@ -17,8 +17,9 @@ const RiderStepActionsContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(4),
   width: '100%',
   backgroundColor: colors.white,
-  minHeight: '100px',
-  maxHeight: '100px',
+  //   minHeight: '100px',
+  //   maxHeight: '100px',
+  flexDirection: 'column',
   zIndex: 10,
   borderTop: `1px solid ${colors.grey}`,
   h2: {
@@ -34,7 +35,6 @@ const RiderStepActionsContainer = styled('div')(({ theme }) => ({
 const Rider = () => {
   const { riderStep } = useRiderStore()
 
-  // I vision this as controlling the state of the bottom part overlaying the map.
   const renderRiderStep = (): JSX.Element => {
     switch (riderStep) {
       case 'GO_ONLINE':
@@ -43,6 +43,10 @@ const Rider = () => {
         return <OrderReceived />
       case 'ORDER_ACCEPTED':
         return <OrderAccepted />
+      case 'ORDER_COLLECTED':
+        return <p>TODO COLLECTED COMPONENT</p>
+      case 'ORDER_DELIVERED':
+        return <p>TODO: DELIVERED COMPONENT</p>
       default:
         return <GoOnline />
     }

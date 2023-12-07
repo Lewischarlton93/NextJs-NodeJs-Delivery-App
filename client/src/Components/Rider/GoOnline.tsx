@@ -25,7 +25,7 @@ const GoOnline = () => {
   const handleOrderTimeout = () => {
     // TODO: Handle the logic when the 30-second countdown reaches 0 (auto-decline the order)
     console.log('Order not accepted within 30 seconds. Auto-declining...')
-    // setWaitingForOrder(true)
+    updateRiderInfo({ riderStep: 'GO_ONLINE' })
   }
 
   const handleDeclineOrder = () => {
@@ -40,9 +40,11 @@ const GoOnline = () => {
   useEffect(() => {
     // Simulate the process of assigning an order after 5 seconds - TODO: Will be changing once customer order part is added!
     const assignmentTimeout = setTimeout(() => {
-      // setWaitingForOrder(false)
-      assignOrderToRider(newOrder, onlineRiders)
-      updateRiderInfo({ riderStep: 'ORDER_RECEIVED' }) // Simulating order received as soon as they come online for now!
+      if (isOnline) {
+        // setWaitingForOrder(false)
+        assignOrderToRider(newOrder, onlineRiders)
+        updateRiderInfo({ riderStep: 'ORDER_RECEIVED' })
+      }
     }, 5000)
 
     return () => {

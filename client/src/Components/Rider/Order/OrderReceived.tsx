@@ -5,6 +5,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront'
 import PersonIcon from '@mui/icons-material/Person'
 import { colors } from '../../../Theme/Theme'
 import Directions from '../../../Services/External/Google/Directions'
+import { useRiderStore } from '../../../Stores/Rider/useRiderStore'
 
 const mockRiderData = {
   name: 'Lewis Charlton',
@@ -22,15 +23,15 @@ const mockCustomerData = {
 }
 
 const OrderDetailsContainer = styled('div')(({ theme }) => ({
-  position: 'absolute',
-  bottom: '75px',
+  //position: 'absolute',
+  // bottom: '75px',
   backgroundColor: colors.white,
-  minHeight: '200px',
-  maxHeight: '200px',
-  overflowY: 'scroll',
+  //   minHeight: '200px',
+  //   maxHeight: '200px',
+  //   overflowY: 'scroll',
   width: '100%',
   padding: theme.spacing(4),
-  zIndex: 11,
+  //zIndex: 11,
   '& .restaurant-details, .customer-details': {
     display: 'flex',
     alignItems: 'center',
@@ -53,12 +54,12 @@ const OrderDetailsContainer = styled('div')(({ theme }) => ({
 }))
 
 const ActionsContainer = styled('div')(({ theme }) => ({
-  position: 'absolute',
-  bottom: 0,
-  minHeight: '75px',
+  //position: 'absolute',
+  // bottom: 0,
+  //   minHeight: '75px',
   padding: theme.spacing(4),
   backgroundColor: colors.white,
-  zIndex: 20,
+  //zIndex: 20,
   width: '100%'
 }))
 
@@ -70,6 +71,7 @@ const OrderReceived = () => {
   const [durationToRestaurant, setDurationToRestaurant] = useState<number>()
   const [durationToCustomer, setDurationToCustomer] = useState<number>()
   const [totalDuration, setTotalDuration] = useState<number>()
+  const { updateRiderInfo } = useRiderStore()
 
   useEffect(() => {
     const fetchDistances = async () => {
@@ -113,8 +115,8 @@ const OrderReceived = () => {
 
   const handleAcceptOrder = () => {
     // TODO: Handle the logic when the rider accepts the order
-    console.log('Order accepted!')
     setWaitingForOrder(false)
+    updateRiderInfo({ riderStep: 'ORDER_ACCEPTED' })
   }
 
   return (
