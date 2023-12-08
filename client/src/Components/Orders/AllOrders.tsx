@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import OrderService from '../../Services/Internal/Orders/Orders'
 import { Typography } from '@mui/material'
 import CreateOrder from './CreateOrder'
+import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 
 interface OrderItem {
   name: string
@@ -33,7 +34,7 @@ const AllOrders = () => {
     isError
   }: UseQueryResult<Order[], Error> = useQuery(queryOptions)
 
-  if (isLoading) return <div>Loading orders...</div>
+  if (isLoading) return <LoadingSpinner />
   if (isError) {
     // TODO: Handle this better.
     return <div>Error fetching data</div>

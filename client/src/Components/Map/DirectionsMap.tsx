@@ -1,21 +1,12 @@
 'use client'
-import React, { useRef, useState, useEffect } from 'react'
-import {
-  useJsApiLoader,
-  GoogleMap,
-  MarkerF,
-  Autocomplete,
-  DirectionsRenderer
-} from '@react-google-maps/api'
-import { styled, Button, TextField, Typography } from '@mui/material'
-import { colors } from '../../Theme/Theme'
+import React, { useState, useEffect } from 'react'
+import { useJsApiLoader, GoogleMap, MarkerF, DirectionsRenderer } from '@react-google-maps/api'
+import { styled, Button } from '@mui/material'
 import LoadingSpinner from '../../UI/Loading/LoadingSpinner'
 import NavigationIcon from '@mui/icons-material/Navigation'
 import { useRiderStore } from '../../Stores/Rider/useRiderStore'
-
-// TODO: Pass in Rider Location, Restaurant Location & Customer Address. (Or get from Zustand global state instead?)
-// Probably just do Current Location and Destination though as never need to do all 3 on the one map.
-interface DirectionsMapProps {}
+import { useRestaurantStore } from '../../Stores/Restaurant/useRestaurantStore'
+import { useCustomerStore } from '../../Stores/Customer/useCustomerStore'
 
 const DirectionsMapContainer = styled('div')(() => ({
   position: 'relative',
@@ -26,31 +17,22 @@ const DirectionsMapContainer = styled('div')(() => ({
 
 const GoogleMapContainer = styled('div')(() => ({
   width: '100%',
-  height: '85vh'
+  height: '50vh',
+  position: 'relative'
 }))
 
 const GoogleMapActions = styled('div')(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
   width: '100%',
-  background: 'rgba(0, 0, 0, 0.6)',
-  padding: theme.spacing(4),
-  '& .google-map-metrics': {
-    marginTop: theme.spacing(4),
-    '&__distance-duration': {
-      display: 'flex',
-      '& p:first-of-type': {
-        marginRight: theme.spacing(2)
-      }
-    }
-  }
+  padding: theme.spacing(4)
 }))
 
 // Currently set to crewe but map will always center to rider location when available
 const centerMapPosition = { lat: 53.09787, lng: -2.44161 }
 const libraries: ['places'] = ['places']
 
-const DirectionsMap: React.FC<DirectionsMapProps> = () => {
+const DirectionsMap: React.FC = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
     libraries
@@ -60,21 +42,10 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
   const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(
     null
   )
-  const [distance, setDistance] = useState('')
-  const [duration, setDuration] = useState('')
-  // const mapZoom = 15
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null)
-  const { riderStep } = useRiderStore()
-
-  const restaurantLocation = {
-    lat: 53.098293,
-    lng: -2.4552962
-  }
-
-  const customerLocation = {
-    lat: 53.111529,
-    lng: -2.4332326
-  }
+  const { riderLocationAddress, riderStep } = useRiderStore()
+  const { restaurantAddress, restaurantLocationCoordinates } = useRestaurantStore()
+  const { customerLocationCoordinates } = useCustomerStore()
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -95,48 +66,30 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
   }, [])
 
   useEffect(() => {
-    console.log('LEW riderStep', riderStep)
-  }, [riderStep])
+    const fetchDirectionsData = async () => {
+      if (isLoaded && google && riderLocationAddress && restaurantAddress) {
+        const directionsService = new google.maps.DirectionsService()
+        const results = await directionsService.route({
+          origin: riderLocationAddress,
+          destination: restaurantAddress,
+          travelMode: 'BICYCLING' as google.maps.TravelMode
+        })
 
-  const originRef = useRef<HTMLInputElement>(null)
-  const destinationRef = useRef<HTMLInputElement>(null)
-
-  if (!isLoaded) {
-    return <LoadingSpinner containerHeight="65vh" />
-  }
-
-  async function calculateRoute() {
-    if (!originRef.current?.value || !destinationRef.current?.value) {
-      return
+        setDirectionsResponse(results)
+      }
     }
 
-    const directionsService = new google.maps.DirectionsService()
-    const results = await directionsService.route({
-      // TODO: origin will always be rider current location.
-      origin: originRef.current.value,
-      // TODO: Will need to do a check here to see if destination is restaurant or customer based on riderStep.
-      destination: destinationRef.current.value,
-      // TODO: Change travelMode to come from rider account settings
-      travelMode: google.maps.TravelMode.BICYCLING
-    })
+    fetchDirectionsData()
+  }, [isLoaded, riderLocationAddress, restaurantAddress])
 
-    setDirectionsResponse(results)
-    setDistance(results.routes[0].legs[0].distance?.text || '')
-    setDuration(results.routes[0].legs[0].duration?.text || '')
+  if (!isLoaded) {
+    return <LoadingSpinner containerHeight="50vh" />
   }
 
-  function clearRoute() {
-    setDirectionsResponse(null)
-    setDistance('')
-    setDuration('')
-    if (originRef.current) originRef.current.value = ''
-    if (destinationRef.current) destinationRef.current.value = ''
-  }
-
-  function openGoogleMaps() {
-    if (originRef.current?.value && destinationRef.current?.value) {
+  const openGoogleMaps = () => {
+    if (riderLocationAddress && restaurantAddress) {
       // TODO: Change bicycling to travelMode from rider account settings
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${originRef.current.value}&destination=${destinationRef.current.value}&travelmode=bicycling`
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${riderLocationAddress}&destination=${restaurantAddress}&travelmode=bicycling`
       window.open(url, '_blank')
     }
   }
@@ -145,29 +98,31 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
     setMap(loadedMap)
   }
 
+  const renderMarkers = () => {
+    return [userLocation, restaurantLocationCoordinates, customerLocationCoordinates]
+      .filter(Boolean)
+      .map(
+        (location, index) =>
+          location && (
+            <MarkerF
+              key={index}
+              position={location}
+              title={
+                index === 0
+                  ? 'Rider Location'
+                  : index === 1
+                  ? 'Restaurant Location'
+                  : 'Customer Location'
+              }
+            />
+          )
+      )
+  }
+
   const renderMarkersOrDirections = () => {
     switch (riderStep) {
       case 'ORDER_RECEIVED':
-        {
-          /* TODO: Make seperate component to render a marker, e.g. pass in position and title */
-        }
-        return (
-          <>
-            {/* Marker didn't work with React 18+ so had to use MarkerF instead. Ref: https://github.com/JustFly1984/react-google-maps-api/issues/3048#issuecomment-1166410403*/}
-            {isLoaded && map && userLocation && (
-              <MarkerF position={userLocation} title="Rider Location" />
-            )}
-            {isLoaded && map && restaurantLocation && (
-              <MarkerF position={restaurantLocation} title="Restaurant Location" />
-            )}
-            {isLoaded && map && customerLocation && (
-              <MarkerF position={customerLocation} title="Customer Location" />
-            )}
-          </>
-        )
-        {
-          /* TODO: Next step is to make sure directionsResponse is set by passing in locations from global state */
-        }
+        return <>{isLoaded && map && renderMarkers()}</>
       case 'ORDER_ACCEPTED':
         return <>{directionsResponse && <DirectionsRenderer directions={directionsResponse} />}</>
       default:
@@ -196,80 +151,27 @@ const DirectionsMap: React.FC<DirectionsMapProps> = () => {
             {renderMarkersOrDirections()}
           </GoogleMap>
         )}
+        {riderStep === 'ORDER_ACCEPTED' && (
+          <GoogleMapActions>
+            <div className="google-map-actions__inner">
+              <Button
+                onClick={openGoogleMaps}
+                variant="outlined"
+                sx={{
+                  borderRadius: '100%',
+                  height: 50,
+                  width: 50,
+                  position: 'absolute',
+                  bottom: (theme) => theme.spacing(4),
+                  right: (theme) => theme.spacing(4)
+                }}
+              >
+                <NavigationIcon sx={{ width: 28, height: 28 }} />
+              </Button>
+            </div>
+          </GoogleMapActions>
+        )}
       </GoogleMapContainer>
-      <GoogleMapActions>
-        <div className="google-map-actions__inner">
-          {/* TODO: Have added inputs here for now (for testing) but the values will just be replaced with store/rider locations */}
-          <Autocomplete>
-            <TextField type="text" placeholder="Origin" inputRef={originRef} />
-          </Autocomplete>
-          <Autocomplete>
-            <TextField
-              type="text"
-              placeholder="Destination"
-              inputRef={destinationRef}
-              variant="outlined"
-            />
-          </Autocomplete>
-          <div className="google-map-actions__buttons">
-            <Button
-              type="submit"
-              onClick={calculateRoute}
-              sx={{ mr: (theme) => theme.spacing(2) }}
-              variant="contained"
-            >
-              Calculate Route
-            </Button>
-            <Button onClick={clearRoute} variant="text">
-              Clear Route
-            </Button>
-            <Button
-              onClick={openGoogleMaps}
-              variant="outlined"
-              sx={{
-                borderRadius: '100%',
-                height: 50,
-                width: 50,
-                position: 'absolute',
-                bottom: (theme) => theme.spacing(4),
-                right: (theme) => theme.spacing(4)
-              }}
-            >
-              <NavigationIcon sx={{ width: 28, height: 28 }} />
-            </Button>
-          </div>
-        </div>
-        <div className="google-map-metrics">
-          <div className="google-map-metrics__distance-duration">
-            <Typography variant="body1" sx={{ color: colors.white }}>
-              Distance: {distance}
-            </Typography>
-            <Typography variant="body1" sx={{ color: colors.white }}>
-              Duration: {duration}
-            </Typography>
-          </div>
-          {/* <div
-            onClick={() => {
-              if (map) {
-                map.panTo(center)
-                map.setZoom(mapZoom + 1)
-              }
-            }}
-          >
-            Zoom In
-          </div>
-          <div
-            onClick={() => {
-              if (map) {
-                map.panTo(center)
-                map.setZoom(mapZoom - 1)
-              }
-            }}
-          >
-            Zoom Out
-          </div> */}
-        </div>
-      </GoogleMapActions>
     </DirectionsMapContainer>
   )
 }

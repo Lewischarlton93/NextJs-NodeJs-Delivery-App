@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { Coordinates } from '../../Types/SharedTypes'
 
 interface RiderStore {
   riderId: number,
@@ -8,7 +9,7 @@ interface RiderStore {
   riderEmailAddress: string,
   // When doing the backend, there's certain fields I probably shouldn't include e.g. location (as this changes constantly)
   riderLocationAddress: string,
-  riderLocationCoordinates: { lat: number, long: number },
+  riderLocationCoordinates: Coordinates,
   delivered: number,
   earned: number,
   rejected: number,
@@ -22,10 +23,10 @@ export const useRiderStore = create<RiderStore>((set) => ({
   riderId: 0,
   riderFirstName: 'Lewis',
   riderLastName: 'Charlton',
-  riderContactNumber:'07777777777',
+  riderContactNumber: '07777777777',
   riderEmailAddress: 'lewistest@test.com',
   riderLocationAddress: '21 Lyceum Close, Crewe, CW1 3YB',
-  riderLocationCoordinates: { lat: 53.09787, long: -2.44161 },
+  riderLocationCoordinates: { lat: 53.09787, lng: -2.44161 },
   delivered: 2,
   earned: 44.65,
   rejected: 7,
