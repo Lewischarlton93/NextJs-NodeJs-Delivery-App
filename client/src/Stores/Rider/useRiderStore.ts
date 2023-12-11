@@ -14,7 +14,8 @@ interface RiderStore {
   earned: number,
   rejected: number,
   assignedOrder: number,
-  riderStep: 'GO_ONLINE' | 'ORDER_RECEIVED' | 'ORDER_ACCEPTED' | 'ORDER_COLLECTED' | 'ORDER_DELIVERED'
+  riderStep: 'GO_ONLINE' | 'ORDER_RECEIVED' | 'ORDER_ACCEPTED' | 'ORDER_COLLECTED' | 'ORDER_DELIVERED',
+  riderTravelType: 'driving' | 'walking' | 'bicycling' | 'transit' | undefined
   updateRiderInfo: (info: Partial<RiderStore>) => void
 }
 
@@ -32,5 +33,6 @@ export const useRiderStore = create<RiderStore>((set) => ({
   rejected: 7,
   assignedOrder: 0,
   riderStep: 'GO_ONLINE',
+  riderTravelType: 'bicycling',
   updateRiderInfo: (info) => set((state) => ({ ...state, ...info })),
 }))

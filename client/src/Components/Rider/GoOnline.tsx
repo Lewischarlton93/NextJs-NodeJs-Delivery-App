@@ -9,13 +9,7 @@ const GoOnline = () => {
   const { riderFirstName, updateRiderInfo } = useRiderStore()
   const [isOnline, setIsOnline] = useState(false)
 
-  // TODO: This actually appears once they have arrived at the restaurant.
-  // const showAssignedOrder = () => {
-  //   return <OrderDetailsById orderId={1} />
-  // }
-
   const handleUpdateOnlineStatus = () => {
-    // TODO: POST REQ to update rider online status in Rider table.
     setIsOnline(!isOnline)
     if (!isOnline) {
       // TODO: Autodecline the order
@@ -31,7 +25,6 @@ const GoOnline = () => {
   const handleDeclineOrder = () => {
     // TODO: Handle the logic when the rider declines the order
     console.log('Order declined.')
-    // setWaitingForOrder(true)
   }
 
   // TODO: Uncomment / Set this back to 30 when done adding styling.
