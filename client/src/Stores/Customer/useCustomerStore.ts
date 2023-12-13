@@ -19,7 +19,7 @@ export const useCustomerStore = create<CustomerStore>((set) => ({
     customerLastName: 'Smith',
     customerContactNumber: '07777777777',
     customerEmailAddress: 'customerone@gmail.com',
-    customerLocationAddress: '1-5 Bateman Cl, Crewe CW1 3DQ',
-    customerLocationCoordinates: { lat: 53.0981936, lng: -2.455946},
+    customerLocationAddress: 'Elizabeth street crewe',
+    customerLocationCoordinates: { lat: 53.1027896, lng: -2.4545611},
     updateCustomerInfo: (info) => set((state) => ({ ...state, ...info })),
 }))

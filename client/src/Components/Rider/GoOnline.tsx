@@ -16,17 +16,6 @@ const GoOnline = () => {
     }
   }
 
-  const handleOrderTimeout = () => {
-    // TODO: Handle the logic when the 30-second countdown reaches 0 (auto-decline the order)
-    console.log('Order not accepted within 30 seconds. Auto-declining...')
-    updateRiderInfo({ riderStep: 'GO_ONLINE' })
-  }
-
-  const handleDeclineOrder = () => {
-    // TODO: Handle the logic when the rider declines the order
-    console.log('Order declined.')
-  }
-
   // TODO: Uncomment / Set this back to 30 when done adding styling.
   // const { timeRemaining, resetTimer } = useCountdownTimer(300000, handleOrderTimeout)
 

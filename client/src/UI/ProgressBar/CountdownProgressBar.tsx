@@ -12,14 +12,11 @@ const CountdownProgressBarContainer = styled('div')(({ theme }: { theme: Theme }
   width: '100%',
   height: theme.spacing(2),
   backgroundColor: colors.grey
-  // TODO: These styles shouldn't really be here as it's suppose to be a re-usable component.
-  // Need to look at passing styleOverrides in.
 }))
 
 const CountdownProgressBarInner = styled('div')(({ theme }: { theme: Theme }) => ({
   backgroundColor: theme.palette.primary.light,
-  height: '100%',
-  position: 'absolute'
+  height: '100%'
 }))
 
 const CountdownProgressBar: React.FC<CountdownProgressBarProps> = ({
