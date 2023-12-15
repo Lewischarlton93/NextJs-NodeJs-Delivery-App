@@ -43,9 +43,9 @@ const DirectionsMap: React.FC = () => {
     null
   )
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null)
-  const { riderLocationAddress, riderStep } = useRiderStore()
+  const { riderLocationAddress, riderStep, riderTravelType } = useRiderStore()
   const { restaurantAddress, restaurantLocationCoordinates } = useRestaurantStore()
-  const { customerLocationCoordinates } = useCustomerStore()
+  const { customerLocationCoordinates, customerLocationAddress } = useCustomerStore()
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -70,8 +70,18 @@ const DirectionsMap: React.FC = () => {
       if (isLoaded && google && riderLocationAddress && restaurantAddress) {
         const directionsService = new google.maps.DirectionsService()
         const results = await directionsService.route({
-          origin: riderLocationAddress,
-          destination: restaurantAddress,
+          origin:
+            riderStep === 'ORDER_ACCEPTED'
+              ? riderLocationAddress
+              : riderStep === 'ORDER_COLLECTED'
+              ? restaurantAddress
+              : '',
+          destination:
+            riderStep === 'ORDER_ACCEPTED'
+              ? restaurantAddress
+              : riderStep === 'ORDER_COLLECTED'
+              ? customerLocationAddress
+              : '',
           travelMode: 'BICYCLING' as google.maps.TravelMode
         })
 
@@ -80,7 +90,7 @@ const DirectionsMap: React.FC = () => {
     }
 
     fetchDirectionsData()
-  }, [isLoaded, riderLocationAddress, restaurantAddress])
+  }, [isLoaded, riderLocationAddress, restaurantAddress, riderStep])
 
   if (!isLoaded) {
     return <LoadingSpinner containerHeight="50vh" />
@@ -88,8 +98,7 @@ const DirectionsMap: React.FC = () => {
 
   const openGoogleMaps = () => {
     if (riderLocationAddress && restaurantAddress) {
-      // TODO: Change bicycling to travelMode from rider account settings
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${riderLocationAddress}&destination=${restaurantAddress}&travelmode=bicycling`
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${riderLocationAddress}&destination=${restaurantAddress}&travelmode=${riderTravelType}`
       window.open(url, '_blank')
     }
   }
@@ -125,8 +134,10 @@ const DirectionsMap: React.FC = () => {
         return <>{isLoaded && map && renderMarkers()}</>
       case 'ORDER_ACCEPTED':
         return <>{directionsResponse && <DirectionsRenderer directions={directionsResponse} />}</>
+      case 'ORDER_COLLECTED':
+        return <>{directionsResponse && <DirectionsRenderer directions={directionsResponse} />}</>
       default:
-        return <></>
+        return <>{directionsResponse && <DirectionsRenderer directions={undefined} />}</>
     }
   }
 
@@ -151,26 +162,27 @@ const DirectionsMap: React.FC = () => {
             {renderMarkersOrDirections()}
           </GoogleMap>
         )}
-        {riderStep === 'ORDER_ACCEPTED' && (
-          <GoogleMapActions>
-            <div className="google-map-actions__inner">
-              <Button
-                onClick={openGoogleMaps}
-                variant="outlined"
-                sx={{
-                  borderRadius: '100%',
-                  height: 50,
-                  width: 50,
-                  position: 'absolute',
-                  bottom: (theme) => theme.spacing(4),
-                  right: (theme) => theme.spacing(4)
-                }}
-              >
-                <NavigationIcon sx={{ width: 28, height: 28 }} />
-              </Button>
-            </div>
-          </GoogleMapActions>
-        )}
+        {riderStep === 'ORDER_ACCEPTED' ||
+          (riderStep === 'ORDER_COLLECTED' && (
+            <GoogleMapActions>
+              <div className="google-map-actions__inner">
+                <Button
+                  onClick={openGoogleMaps}
+                  variant="outlined"
+                  sx={{
+                    borderRadius: '100%',
+                    height: 50,
+                    width: 50,
+                    position: 'absolute',
+                    bottom: (theme) => theme.spacing(4),
+                    right: (theme) => theme.spacing(4)
+                  }}
+                >
+                  <NavigationIcon sx={{ width: 28, height: 28 }} />
+                </Button>
+              </div>
+            </GoogleMapActions>
+          ))}
       </GoogleMapContainer>
     </DirectionsMapContainer>
   )

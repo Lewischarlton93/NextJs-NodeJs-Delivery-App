@@ -35,10 +35,8 @@ const OrderActions: React.FC<OrderActionsProps> = ({ travelingTo }) => {
   const handleArrivedAtLocation = () => {
     // TODO: Some more thought needs to go into this, e.g. button disabled until rider is near the desired destination before
     // they can click on the button.
-
-    if (travelingTo === 'Restaurant') {
-      updateRiderInfo({ riderStep: 'ORDER_COLLECTED' })
-    }
+    if (travelingTo === 'Restaurant') updateRiderInfo({ riderStep: 'ARRIVED_AT_RESTAURANT' })
+    if (travelingTo === 'Customer') updateRiderInfo({ riderStep: 'ORDER_DELIVERED' })
   }
 
   return (

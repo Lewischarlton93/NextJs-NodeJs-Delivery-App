@@ -7,6 +7,7 @@ import { styled } from '@mui/material'
 import { colors } from '../../Theme/Theme'
 import OrderActions from './Order/OrderActions'
 import OrderDetailsById from '../Orders/OrderDetails/OrderDetailsById'
+import OrderDelivered from './Order/OrderDelivered'
 
 const RiderStepActionsContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -39,10 +40,12 @@ const Rider = () => {
         return <OrderReceived />
       case 'ORDER_ACCEPTED':
         return <OrderActions travelingTo="Restaurant" />
-      case 'ORDER_COLLECTED':
+      case 'ARRIVED_AT_RESTAURANT':
         return <OrderDetailsById orderId={1} />
+      case 'ORDER_COLLECTED':
+        return <OrderActions travelingTo="Customer" />
       case 'ORDER_DELIVERED':
-        return <p>TODO: DELIVERED COMPONENT</p>
+        return <OrderDelivered />
       default:
         return <GoOnline />
     }

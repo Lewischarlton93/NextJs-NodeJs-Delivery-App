@@ -14,7 +14,7 @@ interface RiderStore {
   earned: number,
   rejected: number,
   assignedOrder: number,
-  riderStep: 'GO_ONLINE' | 'ORDER_RECEIVED' | 'ORDER_ACCEPTED' | 'ORDER_COLLECTED' | 'ORDER_DELIVERED',
+  riderStep: 'GO_ONLINE' | 'ORDER_RECEIVED' | 'ORDER_ACCEPTED' | 'ARRIVED_AT_RESTAURANT' | 'ORDER_COLLECTED' | 'ORDER_DELIVERED',
   riderTravelType: 'driving' | 'walking' | 'bicycling' | 'transit' | undefined
   updateRiderInfo: (info: Partial<RiderStore>) => void
 }
@@ -34,5 +34,18 @@ export const useRiderStore = create<RiderStore>((set) => ({
   assignedOrder: 0,
   riderStep: 'GO_ONLINE',
   riderTravelType: 'bicycling',
-  updateRiderInfo: (info) => set((state) => ({ ...state, ...info })),
+  updateRiderInfo: (info) => set((state) => {
+    // Add (increase value) to existing value instead of over-writing value
+    const additionalEarned = info.earned ?? 0
+    info.earned = state.earned + additionalEarned
+
+    // For now assuming that only 1 order can be assigned at one time.
+    if ('delivered' in info) {
+      // Increment 'delivered' by 1
+      info.delivered = state.delivered + 1
+    }
+
+    // Merge the updated info with the current state
+    return { ...state, ...info }
+  }),
 }))
